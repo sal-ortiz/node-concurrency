@@ -7,8 +7,12 @@ Async.setAction('helloWorld', function(){
 });
 
 
-Async.execute('helloWorld');
-Async.execute('helloWorld');
-Async.execute('helloWorld');
-Async.execute('helloWorld');
-Async.execute('helloWorld');
+
+
+
+
+Async.executeAction('helloWorld');
+Async.executeAction('helloWorld');
+Async.executeAction('helloWorld');
+Async.executeAction('helloWorld');
+Async.executeAction('helloWorld');
