@@ -1,0 +1,5 @@
+{
+  "name": "nodejs-concurrency",
+  "description": "Perform actions asynchronously using Node Process Clustering.",
+  "version": "0.0.1"
+}
