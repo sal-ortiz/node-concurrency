@@ -1,5 +1,21 @@
 {
   "name": "nodejs-concurrency",
-  "description": "Perform actions asynchronously using Node Process Clustering.",
-  "version": "0.0.1"
+  "description": "Simple multiprocess concurrency using node process clustering.",
+  "version": "0.0.1",
+
+  "main": "main.js",
+
+  "dependencies": {
+  },
+  "devDependencies": {
+  },
+
+  "scripts": {
+  },
+
+  "author": "Salvador Ortiz",
+  "contributors": [
+    "Salvador Ortiz <this.is.salvador.ortiz@gmail.com> (https://github.com/slackjockey/)"
+  ],
+  "license": "MIT"
 }
