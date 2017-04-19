@@ -17,5 +17,10 @@
   "contributors": [
     "Salvador Ortiz <this.is.salvador.ortiz@gmail.com> (https://github.com/slackjockey/)"
   ],
+  "repository" : {
+    "type" : "git",
+    "url" : "https://github.com/slackjockey/node_concurrency.git"
+  },
+
   "license": "MIT"
 }
