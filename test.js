@@ -1,24 +1,26 @@
 var path = require('path')
-var Async = require(path.join(__dirname, 'lib', 'master'));
+var numCPUs = require("os").cpus().length;
 
+var Master = require(path.join(__dirname, 'lib', 'master'));
+var Message = require(path.join(__dirname, 'lib', 'message'));
 
-Async.shared.set('testValue', Math.round(Math.random() * 10e15));
+console.log('Runtime started at', new Date().getTime());
+var Async = new Master();
 
-// an action that returns a value to execute asynchronously.
-var triggerResponse = function(){
-  console.log('called!');
-  return this.payload.testValue + Math.round(Math.random() * 10e15);
+for (var workerCount = numCPUs; workerCount > 0; workerCount--) {
+  Async.startWorker();
 }
 
-// an asynchronous handler to accept the response.
-var handleResponse = function(res){
-  console.log('returned!\t', JSON.stringify(res));
+var asyncMethod = function(val) {
+  console.log('action [' + new Date().getTime() + ']:');
+  return val + 1;
+}
+
+var asyncResponder = function(res) {
+  console.log('responder [' + new Date().getTime() + ']:', res);
 }
 
 
-// a set-and-execute model.
-Async.shared.set('helloWorld', triggerResponse);
-Async.execute('helloWorld').then(handleResponse);
-
-// a slightly slower on-the-fly method.
-Async.execute(triggerResponse).then(handleResponse);
+for (var taskCount = 0; taskCount < 10000;taskCount++) {
+  Async.execute(asyncMethod, taskCount).then(asyncResponder);
+}
