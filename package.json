@@ -1,5 +1,5 @@
 {
-  "name": "nodejs-concurrency",
+  "name": "node-concurrency",
   "description": "Simple multiprocess concurrency using node process clustering.",
   "version": "0.0.1",
 
@@ -19,7 +19,7 @@
   ],
   "repository" : {
     "type" : "git",
-    "url" : "https://github.com/slackjockey/node_concurrency.git"
+    "url" : "https://github.com/slackjockey/node-concurrency.git"
   },
 
   "license": "MIT"
