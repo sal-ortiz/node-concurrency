@@ -119,16 +119,17 @@ describe('Worker', function() {
             };
 
             instance.start();
-            result = instance.execute(input, [])
           });
 
 
           it('returns a promise', function() {
+            let result = instance.execute(input, []);
+
             expect(result.constructor).toBe(Promise);
           });
 
           it('executes the given function in another process', function(done) {
-            result
+            instance.execute(input, [])
               .then(function(workerPid) {
                 expect(workerPid).not.toEqual(process.pid);
 
@@ -136,6 +137,12 @@ describe('Worker', function() {
               });
           });
 
+          it('sends a message to the worker process', function() {
+            spyOn(instance, 'send');
+            let result = instance.execute(input, []);
+
+            expect(instance.send).toHaveBeenCalled();
+          });
 
           describe('given optional further arguments', function() {
             let arg;
