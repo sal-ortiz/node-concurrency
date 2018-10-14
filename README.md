@@ -1,18 +1,18 @@
 # node-concurrency
 Asynchronous execution across multiple processes with Node Clusters.
 
-### How It Works
+## How It Works
 Using the mechanism intended to sync up [Node Clusters](https://nodejs.org/api/cluster.html), we pass serialized data between processes to allow for the execution of arbitrary user functions in worker processes rather than from the main process's [Event Loop](https://nodejs.org/en/docs/guides/event-loop-timers-and-nexttick/).
 
 The bulk of the *magic* is achieved using simple [serialization tricks](https://github.com/slackjockey/node-concurrency/blob/master/lib/message.js); Just a bit of an augmentation on JavaScript's standard [JSON](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON#Methods) functionality.
 
-### Getting Started
-#### Installation:
+## Getting Started
+### Installation:
 ```
 npm install --save node-concurrency
 ```
 
-#### Initialization:
+### Initialization:
 ```
 const Master = require('node-concurrency');
 const Async = new Master();
@@ -28,7 +28,7 @@ for (let cnt = 0; cnt < numCPUs; cnt++) {
 }
 ```
 
-#### Usage:
+### Usage:
 ```
 Async.execute(function() {
   console.log('Hello from process #' + process.pid);
@@ -51,9 +51,9 @@ promise.then(function(msg) {
 });
 ```
 
-### Caveats:
+## Caveats:
 
-#### Scope
+### Scope
 Because user code executed by the ```execute``` function is to be done so from a different process, it is safe to assume that any global scope is not available to the function, as it would be within the scope it was declared.
 
 For example, the following code will fail, due to an *Unknown Identifier* error on ```val```:
@@ -88,7 +88,7 @@ Async.execute(function() {
 ```
 The current implementation of this module only really allows for arbitrary functions, however.
 
-#### Native Functions and Circular References
-Much of the module's functionality is derived from it's [serialization](https://github.com/slackjockey/node-concurrency/blob/master/lib/message.js), which is capable of working with values, objects and functions alike. However, it is currently not capable of working with *native* functions as much of it's serialization is not *new* technology, but rather leveraging of *existing* technology.
+### Native Functions and Circular References
+Much of the module's functionality is derived from it's [serialization](https://github.com/slackjockey/node-concurrency/blob/master/lib/message.js), which is capable of working with values, objects and functions alike. However, it is currently not capable of working with *native* functions as much of it's serialization is not *new* technology, but rather leveraging *existing* technology.
 
 As such, this module is also unable to work with circular references. This issue is common to [JSON-based serialization solutions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Errors/Cyclic_object_value) in JavaScript.
