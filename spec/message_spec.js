@@ -2,41 +2,39 @@ const Path = require('path');
 const Message = require(Path.join(__dirname, '..', 'lib', 'message.js'));
 
 
-describe('Message', function() {
+describe('Message', () => {
 
-  describe('the object', function() {
+  describe('the object', () => {
 
-    describe('the serialize static function', function() {
+    describe('the serialize static function', () => {
       let input = {};
       let result;
 
-      beforeEach(function() {
+      beforeEach(() => {
         result = Message.serialize(input);
       });
 
-
-      it('returns a string', function() {
+      it('returns a string', () => {
         expect(result.constructor).toBe(String);
       });
 
-
-      it('returns output matching it\s input', function() {
+      it('returns output matching it\s input', () => {
         let deserialized = JSON.parse(result);
         expect(deserialized).toEqual(input);
       });
 
     });
 
-    describe('the deserialize static function', function() {
+    describe('the deserialize static function', () => {
       let input = JSON.stringify({});
       let result;
 
-      beforeEach(function() {
+      beforeEach(() => {
         result = Message.deserialize(input);
       });
 
 
-      it('returns the same type as it\'s input', function() {
+      it('returns the same type as it\'s input', () => {
         let deserialized = JSON.parse(input);
         expect(result.constructor).toBe(deserialized.constructor);
       });
@@ -120,43 +118,43 @@ describe('Message', function() {
 
   });
 
-  describe('an instance of', function() {
+  describe('an instance of', () => {
     let instance;
 
-    describe('given no input', function() {
+    describe('given no input', () => {
 
-      beforeEach(function() {
+      beforeEach(() => {
         instance = new Message();
       });
 
-      it('contains an empty payload', function() {
+      it('contains an empty payload', () => {
         expect(instance.payload).toBeUndefined();
       });
 
     });
 
-    describe('given an input', function() {
+    describe('given an input', () => {
       let input = {};
 
-      beforeEach(function() {
+      beforeEach(() => {
         instance = new Message(input);
       });
 
-      it('contains a user payload', function() {
+      it('contains a user payload', () => {
         expect(instance.payload).toBe(input);
       });
 
-      describe('the serialize function', function() {
+      describe('the serialize function', () => {
         let result;
 
-        beforeEach(function() {
+        beforeEach(() => {
           spyOn(instance.constructor, 'serialize')
             .withArgs(instance.payload);
 
           result = instance.serialize();
         });
 
-        it('returns our payload as a string', function() {
+        it('returns our payload as a string', () => {
           expect(instance.constructor.serialize)
             .toHaveBeenCalledWith(instance.payload);
         });
@@ -164,10 +162,10 @@ describe('Message', function() {
 
       });
 
-      describe('the deserialize function', function() {
+      describe('the deserialize function', () => {
         let input = {};
 
-        beforeEach(function() {
+        beforeEach(() => {
           serialized = JSON.stringify(input);
 
           spyOn(instance.constructor, 'deserialize')
@@ -177,12 +175,12 @@ describe('Message', function() {
           instance.deserialize(serialized);
         });
 
-        it('parses the input', function() {
+        it('parses the input', () => {
           expect(instance.constructor.deserialize)
             .toHaveBeenCalledWith(serialized);
         });
 
-        it('updates it\'s own payload', function() {
+        it('updates it\'s own payload', () => {
           expect(instance.payload).toEqual(input);
         });
 

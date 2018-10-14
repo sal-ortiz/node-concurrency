@@ -2,47 +2,47 @@ const Path = require('path');
 const Balancer = require(Path.join(__dirname, '..', 'lib', 'balancer.js'));
 
 
-describe('Balancer', function() {
+describe('Balancer', () => {
 
-  describe('the Round Robin balancer', function() {
+  describe('the Round Robin balancer', () => {
 
-    describe('an instance of', function() {
+    describe('an instance of', () => {
       let instance;
 
-      describe('given an input', function() {
+      describe('given an input', () => {
         let input;
         let base;
 
-        beforeEach(function() {
+        beforeEach(() => {
           base = Object;  // TODO: maybe we should use stubbed Workers?
           input = [new base(), new base()];
           instance = new Balancer.RoundRobin(input);
         });
 
-        describe('the next function', function() {
+        describe('the next function', () => {
 
-          //describe('given an input', function() {
+          //describe('given an input', () => {
           //});
 
-          describe('given no input', function() {
+          describe('given no input', () => {
             let result;
 
-            beforeEach(function() {
+            beforeEach(() => {
               result = instance.next();
             });
 
-            it('returns an element from our input array', function() {
+            it('returns an element from our input array', () => {
               expect(result.constructor).toBe(base);
             });
 
-            it('advances it\'s index', function() {
+            it('advances it\'s index', () => {
               let startIndex = instance.index;
               instance.next();
 
               expect(instance.index).toEqual(startIndex + 1);
             });
 
-            it('cycles forward through the end of our array', function() {
+            it('cycles forward through the end of our array', () => {
               // our interator always starts from 0 if our first call
               // made was to next(), rather than prev().
               let startIndex = instance.index;
@@ -56,23 +56,23 @@ describe('Balancer', function() {
 
         });
 
-        describe('the prev function', function() {
+        describe('the prev function', () => {
 
-          //describe('given an input', function() {
+          //describe('given an input', () => {
           //});
 
-          describe('given no input', function() {
+          describe('given no input', () => {
             let result;
 
-            beforeEach(function() {
+            beforeEach(() => {
               result = instance.prev();
             });
 
-            it('returns an item from our input array', function() {
+            it('returns an item from our input array', () => {
               expect(result.constructor).toBe(base);
             });
 
-            it('retracts it\'s index', function() {
+            it('retracts it\'s index', () => {
               let startIndex = instance.index;
               instance.prev();
 
@@ -82,7 +82,7 @@ describe('Balancer', function() {
 
             });
 
-            it('cycles back through the start of our array', function() {
+            it('cycles back through the start of our array', () => {
               // our interator always starts from the end if our first call
               // made was to prev(), rather than next().
               instance.prev();
@@ -97,7 +97,7 @@ describe('Balancer', function() {
 
       });
 
-      //describe('given an input', function() {
+      //describe('given an input', () => {
       //});
 
     });

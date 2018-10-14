@@ -30,13 +30,13 @@ for (let cnt = 0; cnt < numCPUs; cnt++) {
 
 ### Usage:
 ```
-Async.execute(function() {
+Async.execute(() => {
   console.log('Hello from process #' + process.pid);
 });
 ```
 The function called above can also take optional arguments, provided after the initial function argument. The call returns a JavaScript Promise. The value returned from the provided function is then passed along the subsequent chain.
 ```
-let promise = Async.execute(function(parentPid) {
+let promise = Async.execute((parentPid) => {
   let msg = 'Hello to process #' + parentPid +
       ' from process #' + process.pid;
 
@@ -46,7 +46,7 @@ let promise = Async.execute(function(parentPid) {
 ```
 Which can, of couse, be extended by:
 ```
-promise.then(function(msg) {
+promise.then((msg) => {
   console.log(msg);
 });
 ```
@@ -60,7 +60,7 @@ For example, the following code will fail, due to an *Unknown Identifier* error 
 ```
 let val = 'Hello';
 
-Async.execute(function() {
+Async.execute(() => {
   console.log(val);
 });
 ```
@@ -68,7 +68,7 @@ Try something like this instead:
 ```
 let val = 'Hello';
 
-Async.execute(function(msg) {
+Async.execute((msg) => {
   console.log(msg);
 }, val);
 
@@ -79,11 +79,11 @@ See, however, that each of the two examples above implies access to the ```conso
 
 Consider each worker process as an independent instance of the Node interpreter. As such, you would still have access to globals like ```console``` and ```process``` but currently cannot automatically load other libraries in the worker processes. Check it out:
 ```
-Async.execute(function() {
+Async.execute(() => {
   return process.pid;
-}).then(function(workerPID) {
+}).then((workerPID) => {
   console.log('master pid: ' + process.pid);
-    console.log('worker pid: ' + workerPID);
+  console.log('worker pid: ' + workerPID);
 });
 ```
 The current implementation of this module only really allows for arbitrary functions, however.

@@ -5,23 +5,23 @@ const Worker = require(Path.join(__dirname, '..', 'lib', 'worker.js'));
 const Message = require(Path.join(__dirname, '..', 'lib', 'message.js'));
 
 
-describe('Worker', function() {
+describe('Worker', () => {
 
-  describe('the object', function() {
+  describe('the object', () => {
 
-    describe('the start static method', function() {
+    describe('the start static method', () => {
 
-      //describe('given no input', function() {
+      //describe('given no input', () => {
       //});
 
-      describe('given an input', function() {
+      describe('given an input', () => {
         let func;
         let env;
         let result;
 
-        beforeEach(function() {
+        beforeEach(() => {
           flag = false;
-          func = function(flag) {
+          func = (flag) => {
             flag = !flag;
           };
           env = {};
@@ -29,49 +29,49 @@ describe('Worker', function() {
           result = Worker.start(func, env);
         });
 
-        it('spawns and returns a new worker object', function() {
+        it('spawns and returns a new worker object', () => {
           expect(result.constructor).toBe(Cluster.Worker);
           expect(result.isDead()).toBeFalsy();
         });
 
-        it('spawns a worker that executes on receiving a message', function() {
+        it('spawns a worker that executes on receiving a message', () => {
           expect(result._events.message.includes(func)).toBeTruthy();
         });
 
       });
 
-//      describe('given no input', function() {
+//      describe('given no input', () => {
 //      });
 
     });
 
   });
 
-  describe('an instance of', function() {
+  describe('an instance of', () => {
     let instance;
 
-    beforeEach(function() {
+    beforeEach(() => {
       instance = new Worker();
     });
 
-    describe('given no input', function() {
+    describe('given no input', () => {
 
-      it('has no active promises', function() {
+      it('has no active promises', () => {
         let num = Object.keys(instance.promises).length;
 
         expect(num).toBe(0);
       });
 
-      describe('the start method', function() {
+      describe('the start method', () => {
 
-        describe('given an input', function() {
+        describe('given an input', () => {
           let func;
           let env;
           let expected;
           let result;
 
-          beforeEach(function() {
-            func = function(flag) {
+          beforeEach(() => {
+            func = (flag) => {
               return !flag;
             };
             env = {};
@@ -84,16 +84,16 @@ describe('Worker', function() {
             result = instance.start(func, env);
           });
 
-          it('spawns a new worker', function() {
+          it('spawns a new worker', () => {
             expect(instance.constructor.start).toHaveBeenCalled()
           });
 
-          it('stores it\' worker process object', function() {
+          it('stores it\' worker process object', () => {
             expect(instance.process).toBe(expected);
             expect(instance.process.constructor).toBe(Cluster.Worker);
           });
 
-          it('stores it\' parent process object', function() {
+          it('stores it\' parent process object', () => {
             expect(instance.parent).toBe(process);
           });
 
@@ -101,20 +101,20 @@ describe('Worker', function() {
 
         });
 
-//        describe('given no input', function() {
+//        describe('given no input', () => {
 //        });
 
 
       });
 
-      describe('the execute method', function() {
+      describe('the execute method', () => {
 
-        describe('given an input', function() {
+        describe('given an input', () => {
           let input;
           let result;
 
-          beforeEach(function() {
-            input = function() {
+          beforeEach(() => {
+            input = () => {
               return process.pid;
             };
 
@@ -122,34 +122,34 @@ describe('Worker', function() {
           });
 
 
-          it('returns a promise', function() {
+          it('returns a promise', () => {
             let result = instance.execute(input, []);
 
             expect(result.constructor).toBe(Promise);
           });
 
-          it('executes the given function in another process', function(done) {
+          it('executes the given function in another process', (done) => {
             instance.execute(input, [])
-              .then(function(workerPid) {
+              .then((workerPid) => {
                 expect(workerPid).not.toEqual(process.pid);
 
                 done();
               });
           });
 
-          it('sends a message to the worker process', function() {
+          it('sends a message to the worker process', () => {
             spyOn(instance, 'send');
             let result = instance.execute(input, []);
 
             expect(instance.send).toHaveBeenCalled();
           });
 
-          describe('given optional further arguments', function() {
+          describe('given optional further arguments', () => {
             let arg;
 
-            beforeEach(function() {
+            beforeEach(() => {
               arg = 0;
-              input = function(arg) {
+              input = (arg) => {
                 return arg + 1
               };
 
@@ -157,9 +157,9 @@ describe('Worker', function() {
               result = instance.execute(input, [arg])
             });
 
-            it('passes the arguments to the given function', function(done) {
+            it('passes the arguments to the given function', (done) => {
               result
-                .then(function(ret) {
+                .then((ret) => {
                   expect(ret).toEqual(arg + 1);
 
                   done();
@@ -176,7 +176,7 @@ describe('Worker', function() {
 
     });
 
-    //describe('given an input', function() {
+    //describe('given an input', () => {
     //});
 
   });

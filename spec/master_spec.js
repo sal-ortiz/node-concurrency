@@ -2,37 +2,37 @@ const Path = require('path');
 const Master = require(Path.join(__dirname, '..', 'lib', 'master.js'));
 
 
-describe('Master', function() {
+describe('Master', () => {
 
-//  describe('the object', function() {
+//  describe('the object', () => {
 //  });
 
 
-  describe('an instance of', function() {
+  describe('an instance of', () => {
     let instance;
 
-    describe('given no input', function() {
+    describe('given no input', () => {
 
-      beforeEach(function() {
+      beforeEach(() => {
         instance = new Master();
       });
 
-      it('has no active workers', function() {
+      it('has no active workers', () => {
         expect(instance.workers.length).toBe(0);
       });
 
-      describe('the startWorker method', function() {
+      describe('the startWorker method', () => {
 
-        //describe('given an input', function() {
+        //describe('given an input', () => {
         //});
 
-        describe('given no input', function() {
+        describe('given no input', () => {
 
-          beforeEach(function() {
+          beforeEach(() => {
             instance.startWorker();
           });
 
-          it('starts a single worker', function() {
+          it('starts a single worker', () => {
             expect(instance.workers.length).toEqual(1);
           });
 
@@ -40,13 +40,13 @@ describe('Master', function() {
 
       });
 
-      describe('the execute method', function() {
+      describe('the execute method', () => {
         let input;
         let flag;
 
-        beforeEach(function() {
+        beforeEach(() => {
           flag = false;
-          input = function(flag) {
+          input = (flag) => {
             return !flag;
           }
 
@@ -54,32 +54,32 @@ describe('Master', function() {
           instance.startWorker();
         });
 
-        it('returns a Promise object', function() {
+        it('returns a Promise object', () => {
           let result = instance.execute(input, flag);
 
           expect(result.constructor).toBe(Promise);
         });
 
-        it('calls the given function input with the following args', function(done) {
+        it('calls the given function input with the following args', (done) => {
           // NOTE: our serialization isn't friendly to
           // Jasmine Spy objects so we test by passing
           // a canary through the pipeline.
           instance.execute(input, flag)
-            .then(function(flag) {
+            .then((flag) => {
               expect(flag).toBeTruthy();
 
               done();
             });
         });
 
-        it('calls the input function in another process', function(done) {
+        it('calls the input function in another process', (done) => {
           let masterPid = process.pid;
-          let input = function() {
+          let input = () => {
             return process.pid;
           };
 
           instance.execute(input)
-            .then(function(workerPid) {
+            .then((workerPid) => {
               expect(masterPid).not.toEqual(workerPid);
 
               done();
@@ -91,7 +91,7 @@ describe('Master', function() {
 
     });
 
-    //describe('given an input', function() {
+    //describe('given an input', () => {
     //});
 
   });
