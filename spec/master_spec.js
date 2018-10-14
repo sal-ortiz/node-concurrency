@@ -19,7 +19,6 @@ describe('Master', function() {
 
       it('has no active workers', function() {
         expect(instance.workers.length).toBe(0);
-        expect(instance.currentWorker).toBeLessThan(1);
       });
 
       describe('the startWorker method', function() {
