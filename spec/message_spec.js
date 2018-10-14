@@ -41,9 +41,79 @@ describe('Message', function() {
         expect(result.constructor).toBe(deserialized.constructor);
       });
 
-      it('returns output matching it\s input', function() {
-        let serialized = JSON.stringify(result);
-        expect(serialized).toEqual(input);
+      it('returns output matching it\s input', () => {
+        let reserialized = JSON.stringify(result);
+        expect(reserialized).toEqual(input);
+      });
+
+      it('successfully parses longform function declaratitons', () => {
+        let input = { func: function(val) {} };
+        let serialized = Message.serialize(input);
+
+        let result = Message.deserialize(serialized);
+        expect(result.func.toString()).toEqual(input.func.toString());
+      });
+
+      it('successfully parses shortform function declaratitons', () => {
+        let input = { func: (val) => {} };
+        let serialized = Message.serialize(input);
+
+        let result = Message.deserialize(serialized);
+        expect(result.func.toString()).toEqual(input.func.toString());
+      });
+
+      it('successfully parses optional shortform function syntax', () => {
+        // parantheses are optional in shortfom syntax.
+        let input = { func: val => {} };
+        let serialized = Message.serialize(input);
+
+        let result = Message.deserialize(serialized);
+        expect(result.func.toString()).toEqual(input.func.toString());
+      });
+
+      it('successfully parses objects', () => {
+        // parantheses are optional in shortfom syntax.
+        let input = { obj: { val: 1 } };
+        let serialized = Message.serialize(input);
+
+        let result = Message.deserialize(serialized);
+        expect(JSON.stringify(result.obj)).toEqual(JSON.stringify(input.obj));
+      });
+
+      it('successfully parses arrays', () => {
+        // parantheses are optional in shortfom syntax.
+        let input = { ary: [10,11,12,13,14] };
+        let serialized = Message.serialize(input);
+
+        let result = Message.deserialize(serialized);
+        expect(JSON.stringify(result.ary)).toEqual(JSON.stringify(input.ary));
+      });
+
+      it('successfully parses numbers', () => {
+        // parantheses are optional in shortfom syntax.
+        let input = { num: 1 };
+        let serialized = Message.serialize(input);
+
+        let result = Message.deserialize(serialized);
+        expect(result.num).toEqual(input.num);
+      });
+
+      it('successfully parses single-quoted strings', () => {
+        // parantheses are optional in shortfom syntax.
+        let input = { str: 'hello!' };
+        let serialized = Message.serialize(input);
+
+        let result = Message.deserialize(serialized);
+        expect(result.str).toEqual(input.str);
+      });
+
+      it('successfully parses double-quoted strings', () => {
+        // parantheses are optional in shortfom syntax.
+        let input = { str: "hello!" };
+        let serialized = Message.serialize(input);
+
+        let result = Message.deserialize(serialized);
+        expect(result.str).toEqual(input.str);
       });
 
     });
