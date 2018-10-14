@@ -91,4 +91,4 @@ The current implementation of this module only really allows for arbitrary funct
 ### Native Functions and Circular References
 Much of the module's functionality is derived from it's [serialization](https://github.com/slackjockey/node-concurrency/blob/master/lib/message.js), which is capable of working with values, objects and functions alike. However, it is currently not capable of working with *native* functions as much of it's serialization is not *new* technology, but rather leveraging *existing* technology.
 
-As such, this module is also unable to work with circular references. This issue is common to [JSON-based serialization solutions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Errors/Cyclic_object_value) in JavaScript.
+As such, this module is also unable to work with [circular references](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Errors/Cyclic_object_value).
