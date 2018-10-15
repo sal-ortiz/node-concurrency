@@ -97,13 +97,10 @@ describe('Worker', () => {
             expect(instance.parent).toBe(process);
           });
 
-
-
         });
 
 //        describe('given no input', () => {
 //        });
-
 
       });
 
@@ -143,6 +140,22 @@ describe('Worker', () => {
 
             expect(instance.send).toHaveBeenCalled();
           });
+
+          it('uses the function\'s return to the subsequent promise', (done) => {
+            let val = Math.floor(Math.random() * Date.now());
+            let func = (val) => {
+              return val + 1;
+            };
+
+            instance.execute(func, [val])
+              .then(function(res) {
+                expect(res).toEqual(val + 1);
+
+                done();
+              });
+
+          });
+
 
           describe('given optional further arguments', () => {
             let arg;
