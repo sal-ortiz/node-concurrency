@@ -1,4 +1,5 @@
-var path = require('path')
-var Async = require(path.join(__dirname, 'lib', 'master'));
+
+const Path = require('path');
+const Async = require(Path.join(__dirname, 'lib', 'master.js'));
 
 module.exports = Async;
