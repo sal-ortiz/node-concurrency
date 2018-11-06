@@ -104,6 +104,31 @@ describe('Worker', () => {
 
       });
 
+      describe('the stop method', () => {
+
+        describe('given no input', () => {
+          let func;
+          let env;
+          let expected;
+          let result;
+
+          beforeEach(() => {
+            instance.start();
+            instance.stop();
+          });
+
+          it('kills the current worker', () => {
+            expect(instance.process.process.killed).toBeTruthy();
+          });
+
+        });
+
+//        describe('given an input', () => {
+//        });
+
+      });
+
+
       describe('the execute method', () => {
 
         describe('given an input', () => {
