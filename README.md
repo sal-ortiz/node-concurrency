@@ -52,7 +52,7 @@ promise.then((msg) => {
 ```
 The initial function argument can also be executed after a delay, given as milliseconds after the initial function argument and before any optional extra arguments:
 ```
-let promise = Async.execute((parentPid) => {
+let promise = Async.executeTimeout(() => {
   console.log('greetings from 5 seconds in the future');
 }, 5000);
 
