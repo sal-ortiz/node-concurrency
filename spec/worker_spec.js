@@ -187,6 +187,102 @@ describe('Worker', () => {
 
       });
 
+
+      describe('the executeTimeout method', () => {
+
+        describe('given an input', () => {
+          let input;
+          let result;
+          let delay = 5;
+
+          beforeEach(() => {
+            input = () => {
+              return process.pid;
+            };
+
+            instance.start();
+          });
+
+
+          it('returns a promise', () => {
+            let result = instance.executeTimeout(input, delay, []);
+
+            expect(result.constructor).toBe(Promise);
+          });
+
+          it('executes the given function in another process', (done) => {
+            instance.executeTimeout(input, delay, [])
+              .then((workerPid) => {
+                expect(workerPid).not.toEqual(process.pid);
+
+                done();
+              });
+          });
+
+          it('executes the given function after a delay', (done) => {
+            let timestamp = Date.now();
+
+            instance.executeTimeout(input, delay, [])
+              .then((workerPid) => {
+                expect(Date.now()).toBeGreaterThan(timestamp + delay);
+
+                done();
+              });
+          });
+
+          it('sends a message to the worker process', () => {
+            spyOn(instance, 'send');
+            let result = instance.executeTimeout(input, delay, []);
+
+            expect(instance.send).toHaveBeenCalled();
+          });
+
+          it('uses the function\'s return to the subsequent promise', (done) => {
+            let val = Math.floor(Math.random() * Date.now());
+            let func = (val) => {
+              return val + 1;
+            };
+
+            instance.executeTimeout(func, delay, [val])
+              .then(function(res) {
+                expect(res).toEqual(val + 1);
+
+                done();
+              });
+
+          });
+
+
+          describe('given optional further arguments', () => {
+            let arg;
+
+            beforeEach(() => {
+              arg = 0;
+              input = (arg) => {
+                return arg + 1
+              };
+
+              instance.start();
+              result = instance.executeTimeout(input, delay, [arg])
+            });
+
+            it('passes the arguments to the given function', (done) => {
+              result
+                .then((ret) => {
+                  expect(ret).toEqual(arg + 1);
+
+                  done();
+                });
+
+            });
+
+
+          });
+
+        });
+
+      });
+
     });
 
     //describe('given an input', () => {
