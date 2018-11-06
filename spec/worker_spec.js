@@ -193,7 +193,7 @@ describe('Worker', () => {
         describe('given an input', () => {
           let input;
           let result;
-          let delay = 5;
+          let delay = 125;
 
           beforeEach(() => {
             input = () => {
