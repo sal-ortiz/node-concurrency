@@ -116,6 +116,71 @@ describe('Master', () => {
 
       });
 
+      describe('the executeTimeout method', () => {
+        let input;
+        let flag;
+        let delay = 125;
+
+        beforeEach(() => {
+          flag = false;
+          input = (flag) => {
+            return !flag;
+          }
+
+          // need a worker to execute stuff.
+          instance.startWorker();
+        });
+
+        it('returns a Promise object', () => {
+          let result = instance.executeTimeout(input, delay, flag);
+
+          expect(result.constructor).toBe(Promise);
+        });
+
+        it('calls the given function input with the following args', (done) => {
+          // NOTE: our serialization isn't friendly to
+          // Jasmine Spy objects so we test by passing
+          // a canary through the pipeline.
+          instance.executeTimeout(input, delay, flag)
+            .then((flag) => {
+              expect(flag).toBeTruthy();
+
+              done();
+            });
+        });
+
+        it('calls the input function in another process', (done) => {
+          let masterPid = process.pid;
+          let input = () => {
+            return process.pid;
+          };
+
+          instance.executeTimeout(input, delay)
+            .then((workerPid) => {
+              expect(masterPid).not.toEqual(workerPid);
+
+              done();
+            });
+
+        });
+
+        it('calls the input function after the given delay', (done) => {
+          let input = () => {
+            return Date.now();
+          };
+
+          let timestamp = Date.now();
+          instance.executeTimeout(input, delay)
+            .then((execTimestamp) => {
+              expect(execTimestamp).toBeGreaterThan(timestamp + delay);
+
+              done();
+            });
+
+        });
+
+      });
+
     });
 
     //describe('given an input', () => {
