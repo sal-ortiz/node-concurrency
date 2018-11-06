@@ -4,11 +4,17 @@
   "version": "0.0.2-beta",
   "license": "MIT",
   "keywords": [
+    "process",
+    "multiprocess",
     "cluster",
     "async",
     "asyncronous",
     "concurrent",
-    "promise"
+    "concurrency",
+    "promise",
+    "master",
+    "worker",
+    "slave"
   ],
   "main": "main.js",
   "engines": {
