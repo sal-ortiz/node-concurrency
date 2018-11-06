@@ -40,6 +40,33 @@ describe('Master', () => {
 
       });
 
+      describe('the stopWorker method', () => {
+
+        //describe('given an input', () => {
+        //});
+
+        describe('given no input', () => {
+
+          beforeEach(() => {
+            instance.startWorker();
+          });
+
+          it('stops a single worker', () => {
+            let worker = instance.workers[0];
+
+            expect(instance.workers.length).toEqual(1);
+            expect(worker.process.process.killed).toBeFalsy();
+
+            instance.stopWorker();
+
+            expect(instance.workers.length).toEqual(0);
+            expect(worker.process.process.killed).toBeTruthy();
+          });
+
+        });
+
+      });
+
       describe('the execute method', () => {
         let input;
         let flag;
