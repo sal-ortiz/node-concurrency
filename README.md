@@ -59,6 +59,18 @@ let promise = Async.executeTimeout(() => {
 ```
 The initial function argument given above will be executed, as expected, but will be delayed by 5 seconds.
 
+external dependencies can be injected into worker processes via the master object:
+```
+// https://www.npmjs.com/package/one-liner-joke
+Async.setDependency('OneLinerJoke', 'one-liner-joke');
+
+let promise = Async.execute(() => {
+  let joke = this.OneLinerJoke.getRandomJoke();
+
+  console.log(joke.body);
+});
+```
+
 ## Caveats:
 
 ### Scope
