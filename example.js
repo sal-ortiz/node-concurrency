@@ -12,7 +12,7 @@ const promises = new Array(numTasks);
 let asyncMethod = (val) => {
   console.log('action(' + process.pid + ') [' + Date.now() + ']: ');
 
-  return val + 1;
+  return this.Helper.increment(val);
 };
 
 let asyncResponder = (res) => {
@@ -22,7 +22,10 @@ let asyncResponder = (res) => {
 let startTime = Date.now();
 
 console.log('Runtime started at ' + startTime + ' from process ' + process.pid);
+
 let Async = new Master();
+
+Async.setDependency('Helper', Path.join(__dirname, 'example-helper.js'));
 
 for (let workerCount = numCPUs; workerCount > 0; workerCount--) {
   Async.startWorker();
