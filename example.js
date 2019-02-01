@@ -1,9 +1,9 @@
 #!/usr/bin/node
 
-const path = require('path')
+const Path = require('path');
 const numCPUs = require("os").cpus().length;
 
-const Master = require(path.join(__dirname, 'lib', 'master'));
+const Master = require(Path.join(__dirname, 'lib', 'master.js'));
 
 const numTasks = 10000;
 const promises = new Array(numTasks);
