@@ -2,7 +2,7 @@
 
 module.exports = {
 
-  increment(inp) {
+  increment: (inp) => {
     return inp + 1;
   },
 
