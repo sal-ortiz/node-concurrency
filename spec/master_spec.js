@@ -2,11 +2,14 @@ const Path = require('path');
 const Master = require(Path.join(__dirname, '..', 'lib', 'master.js'));
 
 
+const DEP_STUB_PATH = Path.join(__dirname, 'support', 'dependency_stub.js');
+const DependencyStub = require(DEP_STUB_PATH);
+
+
 describe('Master', () => {
 
 //  describe('the object', () => {
 //  });
-
 
   describe('an instance of', () => {
     let instance;
@@ -15,9 +18,13 @@ describe('Master', () => {
 
       beforeEach(() => {
         instance = new Master();
+
+        instance.startWorker();
       });
 
       it('has no active workers', () => {
+        let instance = new Master();
+
         expect(instance.workers.length).toBe(0);
       });
 
@@ -27,10 +34,6 @@ describe('Master', () => {
         //});
 
         describe('given no input', () => {
-
-          beforeEach(() => {
-            instance.startWorker();
-          });
 
           it('starts a single worker', () => {
             expect(instance.workers.length).toEqual(1);
@@ -46,10 +49,6 @@ describe('Master', () => {
         //});
 
         describe('given no input', () => {
-
-          beforeEach(() => {
-            instance.startWorker();
-          });
 
           it('stops a single worker', () => {
             let worker = instance.workers[0];
@@ -75,10 +74,8 @@ describe('Master', () => {
           flag = false;
           input = (flag) => {
             return !flag;
-          }
+          };
 
-          // need a worker to execute stuff.
-          instance.startWorker();
         });
 
         it('returns a Promise object', () => {
@@ -114,6 +111,24 @@ describe('Master', () => {
 
         });
 
+        it('exposes dependencies to input function\'s scope', (done) => {
+          let instance = new Master();
+          let input = (val) => {
+            let obj = this['DepStub'];
+
+            return obj.increment(val);
+          };
+
+          instance.setDependency('DepStub', DEP_STUB_PATH);
+          instance.execute(input, 0)
+            .then((res) => {
+              expect(res).toEqual(1);
+
+              done();
+            });
+
+        });
+
       });
 
       describe('the executeTimeout method', () => {
@@ -127,8 +142,6 @@ describe('Master', () => {
             return !flag;
           }
 
-          // need a worker to execute stuff.
-          instance.startWorker();
         });
 
         it('returns a Promise object', () => {
@@ -177,6 +190,25 @@ describe('Master', () => {
               done();
             });
 
+        });
+
+      });
+
+      describe('the setDependency method', () => {
+        let id = 'Path';
+        let path = 'path';
+        let before;
+
+
+        it('adds the given id and path to the list of dependencies', () => {
+
+          let beforeLen = Object.keys(instance.requires).length;
+
+          instance.setDependency(id, path);
+
+          let afterLen = Object.keys(instance.requires).length;
+
+          expect(afterLen).toBeGreaterThan(beforeLen);
         });
 
       });
