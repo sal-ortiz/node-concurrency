@@ -22,6 +22,11 @@ describe('Master', () => {
         instance.startWorker();
       });
 
+      afterEach(() => {
+        instance.stopWorker();
+      });
+
+
       it('has no active workers', () => {
         let instance = new Master();
 
